@@ -1,0 +1,102 @@
+create database Transportation;
+use Transportation;
+drop database Transportation;
+
+
+-- Car
+create table Car(
+serial_ib  bigint not null unique primary key,
+zarfiat dec(6,3),
+marke varchar(20),
+pelake varchar(15),
+ccreat_years date
+);
+drop table Car;
+-- Car
+
+
+-- driver 
+drop table driver;
+create table driver(
+cod_meli bigint unique not null primary key,
+name varchar(15),
+lname varchar(15),
+bearthday date ,
+city varchar(20)
+);
+create table phone_number_table(
+phone_id bigint not null ,
+phone_n varchar(15),
+primary key(phone_id,phone_n),
+foreign key(phone_id)
+references driver(cod_meli)
+);
+drop table phone_number_table;
+-- driver 
+
+
+
+
+
+-- Bar
+create table Bar(
+bar_id bigint not null primary key unique,
+value_type varchar(15),
+price decimal(10,6),
+weight dec(6,3),
+date_day date
+);
+drop table Bar;
+create table Addres(
+bar_id bigint unique not null ,
+ostan varchar(20),
+city varchar(15),
+khiaban varchar(15),
+koche varchar(15),
+post_code varchar(15) not null,
+primary key(bar_id,post_code),
+foreign key(bar_id)
+references Bar(bar_id)
+);
+drop table addres;
+-- Bar
+
+create table factor(
+bar_id bigint not null unique,
+cod_meli bigint not null,
+serial_ib bigint not null,
+date_time date,
+city varchar(15),
+price decimal(10,6),
+primary key(bar_id,cod_meli,serial_ib)
+);
+drop table factor;
+
+
+select cod_meli,phone_id,phone_n from driver,phone_number_table
+where phone_number_table.phone_id = driver.cod_meli and phone_number_table.phone_id = 6150167135 ;
+
+select Car.marke,factor.city from Car,factor
+where Car.sno = factor.sno and factor.city = 'bandar';
+
+
+
+-- query
+
+
+select driver.name,driver.lname from driver
+where driver.cod_meli in (select factor.cod_meli 
+						  from factor
+                          where factor.bar_id in ((select bar.bar_id
+											    from bar
+                                                where bar.value_type = 'mes'),
+                                                (select bar.bar_id from bar
+                                                where bar.value_type = 'tala' )));
+                                                
+                                       
+                                                
+                              
+                             
+                              
+                              
+

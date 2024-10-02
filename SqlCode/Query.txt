@@ -1,0 +1,43 @@
+SELECT * FROM transportation.driver;
+
+
+-- name driver list tedad bar
+SELECT d.name, COUNT(f.cod_meli) AS count_cod_meli
+FROM driver d
+JOIN factor f ON d.cod_meli = f.cod_meli
+GROUP BY f.cod_meli;
+
+-- name driver > 1
+SELECT d.name, COUNT(f.cod_meli) AS count_cod_meli
+FROM driver d
+JOIN factor f ON d.cod_meli = f.cod_meli
+GROUP BY f.cod_meli
+HAVING COUNT(f.cod_meli) > 1;
+
+
+-- sen driver
+SELECT name, lname, TIMESTAMPDIFF(YEAR, bearthday, CURDATE()) AS age
+FROM driver;
+
+-- name boomi driver
+SELECT 
+  CASE 
+    WHEN city = 'Çabhar' THEN CONCAT(name, 'boomi')
+    ELSE name
+  END AS drivername
+FROM driver;
+
+
+-- pelack sabt shode baraye har driver
+SELECT c.pelake, d.name
+FROM Car c
+JOIN factor f ON c.serial_ib = f.serial_ib
+JOIN driver d ON f.cod_meli = d.cod_meli;
+
+
+-- tedad pelack haye sabt shode baraye har driver
+SELECT d.name, COUNT(c.pelake) AS pelack
+FROM Car c
+JOIN factor f ON c.serial_ib = f.serial_ib
+JOIN driver d ON f.cod_meli = d.cod_meli
+GROUP BY d.name;
